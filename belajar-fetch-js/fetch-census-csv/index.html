@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fetch Data : Case 2</title>
+</head>
+<body>
+    <script>
+        getData();
+        async function getData() {
+            const response = await fetch('post-school-qualification-field-of-study-2018-census-csv.csv');
+            const data = await response.text();
+            const table = data.split(/\n/).slice(1);
+            table.forEach(rows => {
+                const row = rows.split(',');
+                const qualification = row[1];
+                const population = row[2];
+                console.log(qualification,population);
+            });
+        }
+    </script>
+</body>
+</html>
