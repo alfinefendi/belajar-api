@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Belajar API : populasi</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Population in last decade</h1>
+    </div>
+    <canvas id="chart" height="75"></canvas>
+    <script>
+        const src = "population.js";
+        async function getData()
+        {
+            const xs = [];
+            const xy = [];
+            const response = await fetch(src);
+            const table = await response.json();
+            table.forEach(cols => {
+                const {year, population} = cols;
+                let container = document.querySelector('.container');
+                let p1 = document.createElement('p');
+                let p2 = document.createElement('p');
+                p1.textContent = `Year : ${year}`;
+                p2.textContent = `Population : ${population}`;
+                container.appendChild(p1);
+                container.appendChild(p2);
+
+
+                // export also dataset for making chart
+                xs.push(year);
+                xy.push(population);
+            });
+            return {xs,xy};
+        }
+        getData();
+
+
+        async function chartIt()
+        {
+            const data = await getData();
+            const canvas = document.getElementById('chart');
+            new Chart(canvas, {
+                type: 'line',
+                data: {
+                    labels: data.xs,
+                    datasets: [{
+                        label: 'Population in last decade',
+                        data: data.xy,
+                        borderWidth: 1
+                    }]
+                }
+            });
+        }
+        chartIt()
+
+        
+    </script>
+</body>
+</html>
