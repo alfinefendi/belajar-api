@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Belajar Mapping : Leaflet.js</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <style>
+        #customerMap{
+            height: 400px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Where is Customer is ?</h1>
+    <p>
+        Customer Name : <span id="customerName"></span></br>
+        Customer ID : <span id="customerId"></span></br>
+        Latitude : <span id="lat"></span></br>
+        Longitude : <span id="lon"></span>
+    </p>
+    <div id="customerMap"></div>
+    <script>
+        const map = L.map('customerMap').setView([0,0], 4);
+        const marker = L.marker([0,0]);
+        const attribution =  '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>';
+        const url = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+        const tile = L.tileLayer(url,{attribution});
+        tile.addTo(map);
+        marker.addTo(map);
+
+        const file = 'data.js';
+        async function getLocation()
+        {
+            const res = await fetch(file);
+            const data = await res.json();
+            data.forEach(row => {
+                const {customerName,customerId,lat,lon} = row;
+                // mapping leaflet
+                marker.setLatLng([lat,lon]);
+                map.setView([lat,lon],16);
+                document.getElementById('customerName').textContent = customerName;
+                document.getElementById('customerId').textContent = customerId; 
+                document.getElementById('lat').textContent = lat;
+                document.getElementById('lon').textContent = lon; 
+            });
+
+        }
+        getLocation();
+    </script>
+</body>
+
+</html>
