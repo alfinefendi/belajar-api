@@ -1,0 +1,15 @@
+{
+  "name": "second-module",
+  "version": "1.0.0",
+  "description": "make simple application using node",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "alfinefendi",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2",
+    "nedb": "^1.8.0"
+  }
+}
